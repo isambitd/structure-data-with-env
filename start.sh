@@ -106,5 +106,7 @@ function start {
     build_run_and_download
 }
 
-start
+clean_and_start
+# start
+
 echo "Thank you :)"

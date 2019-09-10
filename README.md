@@ -59,6 +59,10 @@ Data cleanup
 - Downloading the output csv files to the output folder named as `outputs`
 
 
+*** How to run ***
+Run `start.sh` in linux terminal
+
+
 NOTE : Tip amounts are rounded upto two decimal places
 
 *** Assuming docker is installed in test mahcine ***
