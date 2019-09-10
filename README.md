@@ -59,7 +59,7 @@ Data cleanup
 - Downloading the output csv files to the output folder named as `outputs`
 
 
-NOTE : Tip amount are rounded upto two decimal places
+NOTE : Tip amounts are rounded upto two decimal places
 
 *** Assuming docker is installed in test mahcine ***
 
