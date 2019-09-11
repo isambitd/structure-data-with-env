@@ -21,18 +21,13 @@ zone_map = dict()
 zones_to_delete = list()
 for document in zones:
     # making dictionary and indexing with locationID will make the search faster for future
-    zone_map[document["LocationID"]] = document
-    if document["Zone"] == "NA":
-        zones_to_delete.append(document["LocationID"])
-
-# Create Indexes
-print("Creating indexes...")
-trip_data.create_index("tpep_dropoff_datetime")
-trip_data.create_index("DOLocationID")
-print("Indexes created")
+    if document["Borough"] != "Unknown" and document["Zone"] != "NA":
+        print(document)
+        zone_map[document["LocationID"]] = document
 
 # Cleanup
-trip_data.delete_many({"DOLocationID": {"$in": zones_to_delete}})
+trip_data.delete_many(
+    {"DOLocationID": {"$nin": [i for i in zone_map]}})
 
 
 def generate_longest_trip():
@@ -49,27 +44,18 @@ def generate_longest_trip():
         top_results = trip_data.find(longest_trip_query).sort(
             "trip_distance", DESCENDING).limit(5)
         for document in top_results:
-            row = list()
             # Altering the date time to match the output format
-            row.append(document["tpep_dropoff_datetime"].split(" ")[0])
-            row.append(document["tpep_dropoff_datetime"].split(" ")[
-                0] + "T" + document["tpep_dropoff_datetime"].split(" ")[1] + ".000Z")
-            if int(document["DOLocationID"]) in zone_map:
-                row.append(zone_map[document["DOLocationID"]]["Borough"])
-                row.append(zone_map[document["DOLocationID"]]["Zone"])
-            else:
-                # Considering the edge case if the DropOff Location Doesnot exists in the Zone Database
-                print(document)
-                row.append("Unknown")
-                row.append("NA")
-            row.append(document["trip_distance"])
-            result_trips.append(row)
+            result_trips.append([document["tpep_dropoff_datetime"].split(" ")[0],
+                                 document["tpep_dropoff_datetime"].split(" ")[
+                0] + "T" + document["tpep_dropoff_datetime"].split(" ")[1] + ".000Z",
+                zone_map[document["DOLocationID"]]["Borough"],
+                zone_map[document["DOLocationID"]]["Zone"],
+                document["trip_distance"]])
     # Creting the csv file
     writer = csv.writer(open("longest_trips_per_day_by_sambit.csv", 'w'))
     writer.writerow(["dropoff_date", "tpep_dropoff_datetime",
                      "Borough", "Zone", "Trip_distance"])
-    for i in range(len(result_trips)):
-        writer.writerow(result_trips[i])
+    writer.writerows(result_trips)
 
 
 def generate_top_tipping():

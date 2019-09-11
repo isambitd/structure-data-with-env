@@ -1,2 +1,4 @@
 tip_logs.txt
 trip_logs.txt
+outputs/top_tipping_zones_by_sambit.csv
+outputs/longest_trips_per_day_by_sambit.csv
