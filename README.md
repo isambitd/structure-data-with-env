@@ -26,12 +26,10 @@ then go to the collection
 Create Indexes
 `db.trip_data.createIndex({"tpep_dropoff_datetime":1})`
 `db.trip_data.createIndex({"DOLocationID":1})`
-`db.trip_data.createIndex({"DOLocationID":1, "tip_amount":1})`
 
 output will be like
 `{ "createdCollectionAutomatically" : false, "numIndexesBefore" : 1, "numIndexesAfter" : 2, "ok" : 1 }`
 `{ "createdCollectionAutomatically" : false, "numIndexesBefore" : 2, "numIndexesAfter" : 3, "ok" : 1 }`
-`{ "createdCollectionAutomatically" : false, "numIndexesBefore" : 3, "numIndexesAfter" : 4, "ok" : 1 }`
 
 Data cleanup
 `db.trip_data.remove({"DOLocationID":{"$in": [264, 265]}}, {"multi": true})`

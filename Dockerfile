@@ -19,7 +19,6 @@ RUN mkdir -p /data/db
 RUN apt-get clean
 
 COPY app/db.init.sh .
-COPY app/migrate.js .
 RUN chmod +x ./db.init.sh
 RUN sh ./db.init.sh
 

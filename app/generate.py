@@ -25,6 +25,12 @@ for document in zones:
     if document["Zone"] == "NA":
         zones_to_delete.append(document["LocationID"])
 
+# Create Indexes
+print("Creating indexes...")
+trip_data.create_index("tpep_dropoff_datetime")
+trip_data.create_index("DOLocationID")
+print("Indexes created")
+
 # Cleanup
 trip_data.delete_many({"DOLocationID": {"$in": zones_to_delete}})
 
@@ -77,7 +83,6 @@ def generate_top_tipping():
         ]
         cursor = trip_data.aggregate(pipeline)
         result = list(cursor)
-        print(result)
         if len(result) > 0:
             heappush(heapList, (result[0]["sum"], result[0]["_id"]))
             # It is keeping only top 5 tip amount

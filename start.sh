@@ -91,7 +91,7 @@ function build_run_and_download {
     docker build -t yellow-img -f ./Dockerfile .
     docker run -it --name=yellow-cont -d yellow-img
     container_id=`docker ps -aqf "name=yellow-cont" `
-    # download_longest_file
+    download_longest_file
     download_top_tips
 }
 
@@ -106,7 +106,7 @@ function start {
     build_run_and_download
 }
 
-clean_and_start
-# start
+# clean_and_start
+start
 
 echo "Thank you :)"
